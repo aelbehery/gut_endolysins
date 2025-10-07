@@ -59,3 +59,7 @@ If you use or adapt the data or commands from this repository, please cite:
 > Elbehery, A.H.A, *et al.* (2025). **Mining Over 170,000 Uncultured Phage Genomes Reveals Novel Endolysins Active Against Multidrug-Resistant *Streptococcus pyogenes*.**
 
 (Full citation details will be updated upon publication.)
+
+---
+
+📄 License: CC BY-NC 4.0
