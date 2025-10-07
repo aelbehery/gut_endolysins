@@ -1,0 +1,14 @@
+#HMMSCAN
+hmmscan -o /dev/null --cpu 4 --tblout GPD_GVD.99.prot.orfs.vs.HMM_endolysin.txt phrog/HMM_endolysin/HMM_endolysin.hmm GPD_GVD.99.prot.faa
+#Dereplication
+cd-hit -i putative_endolysins.phrogs.faa -o putative_endolysins.phrogs.nr90.faa -c 0.9 -n 5 -M 0 -d 0 -T 8
+#InterProScan
+interproscan.sh -cpu 6 -appl CDD,Pfam -o putative_endolysins.interproscan_Pfam_CDD.txt -f TSV -i putative_endolysins.faa
+#iPHoP
+iphop predict --fa_file GPD_GVD.99.genomes_w_endolysin_and_or_holin.fna --db_dir ../data/databases/iphop_db/Sept_2021_pub_rw/ --out_dir iphop_output_genomes_w_endolysin_and_or_holin --num_threads 8 &> iphop_genomes_w_endolysin_and_or_holin.log
+#Replidec
+Replidec -p multiSeqEachAsOne -i GPD_GVD.99.genomes_w_endolysin_and_or_holin.fna -w GPD_GVD.99.genomes_w_endolysin_and_or_holin_replication_cycle -t 8 -D prokaryote
+# DIAMOND BLASTP vs nr
+diamond blastp -q putative_endolysins_and_holins.phrogs.nr90.faa -d nr -o putative_endolysins_and_holins.phrogs.nr90.vs.nr_db.blastp.diamond.txt --outfmt 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore stitle --header --threads 4
+#SignalP
+printf "gram+\ngram-\n" | parallel "signalp -fasta putative_endolysins_and_holins.phrogs.nr90.Ns_removed.faa -org {} -prefix putative_endolysins_and_holins.phrogs.nr90.Ns_removed.signalp_{} -verbose &> signalp_{}.log"
